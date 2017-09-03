@@ -38,8 +38,8 @@
 
      Fixtures.getCollection = function(numberOfAlbums) {
          var albumGrid = [];
-         for (var i=0; i <= numberOfAlbums; i++) {
-         albumGrid.push(Fixtures.getAlbum);
+         for (var i=0; i < numberOfAlbums; i++) {
+         albumGrid.push(angular.copy(albumPicasso));
 
       };
 
