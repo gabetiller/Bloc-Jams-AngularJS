@@ -41,8 +41,9 @@
          for (var i=0; i < numberOfAlbums; i++) {
          albumGrid.push(angular.copy(albumPicasso));
 
-      };
 
+      };
+return albumGrid;
   }
 
     return Fixtures;
