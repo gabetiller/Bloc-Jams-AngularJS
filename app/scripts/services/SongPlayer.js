@@ -1,8 +1,11 @@
 (function() {
-     function SongPlayer() {
+     function SongPlayer(Fixtures) {
           var SongPlayer = {};
-
-          var currentSong = null;
+/**
+* @desc storing album info
+* @type {Object}
+*/
+          var currentAlbum = Fixtures.getAlbum();
 /**
 * @desc Buzz object audio file
 * @type {Object}
@@ -27,7 +30,7 @@
     var setSong = function(song) {
            if (currentBuzzObject) {
                currentBuzzObject.stop();
-               currentSong.playing = null;
+               SongPlayer.currentSong.playing = null;
            }
 
 
@@ -41,36 +44,72 @@
              preload: true
          });
 
-         currentSong = song;
+         SongPlayer.currentSong = song;
       };
+      var getSongIndex = function(song) {
+           return currentAlbum.songs.indexOf(song);
+       };
+ /**
+ * @function getSongIndex
+ * @desc finding the index of the current song being played
+ * @param {Object} song
+ */
+      var getSongIndex = function(song) {
+       return currentAlbum.songs.indexOf(song);
+};
+/**
+* @desc Active song object from list of songs
+* @type {Object}
+*/
+    SongPlayer.currentSong = null;
 /**
 * @function SongPlayer.play
 * @desc If the currently playing song is not the same as the song the user clicks on, then we want to:
         1.Stop the currently playing song, if there is one.
         2.Set a new Buzz sound object.
-        3.Set the newly chosen song object as the currentSong.
+        3.Set the newly chosen song object as the SongPlayer.currentSong.
         4..Play the new Buzz sound object.
 * @param {Object} song
 */
      SongPlayer.play = function(song) {
-       if (currentSong !== song) {
+       song = song || SongPlayer.currentSong;
+       if (SongPlayer.currentSong !== song) {
 
          setSong(song);
 
          playSong(song);
 
-         } else if (currentSong === song) {
+         } else if (SongPlayer.currentSong === song) {
            if (currentBuzzObject.isPaused()) {
                currentBuzzObject.play();
            }
        }
      };
 /**
+* @function SongPlayer.previous
+* @desc gets the previous index of the song. If the song is the first song and the user clicks previous, the current song stops. if it's not the first song, it plays the index.
+* @param {Object} Songplayer.currentSong
+*/
+     SongPlayer.previous = function() {
+     var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+     currentSongIndex--;
+
+     if (currentSongIndex < 0) {
+         currentBuzzObject.stop();
+         SongPlayer.currentSong.playing = null;
+       } else {
+           var song = currentAlbum.songs[currentSongIndex];
+           setSong(song);
+           playSong(song);
+       }
+ };
+/**
 * @function SongPlayer.play
 * @desc If the user clicks on the currentBuzzObject (current song) we pause the song and set the song.play boolean to false.
 * @param {Object} song
 */
      SongPlayer.pause = function(song) {
+      song = song || SongPlayer.currentSong;
      currentBuzzObject.pause();
      song.playing = false;
  };
@@ -79,5 +118,5 @@
 
      angular
          .module('blocJams')
-         .factory('SongPlayer', SongPlayer);
+         .factory('SongPlayer', ['Fixtures', SongPlayer]);
  })();
