@@ -14,6 +14,11 @@
    * @desc Stops currently playing song and loads new audio file as currentBuzzObject
    * @param {Object} song
    */
+
+   var playSong = function(song) {
+         currentBuzzObject.play();
+         song.playing = true;
+   }
     var setSong = function(song) {
            if (currentBuzzObject) {
                currentBuzzObject.stop();
@@ -21,13 +26,10 @@
            }
    /**
    * @function playSong
-   * @desc Plays the current Buzz object. Sets the playing property of the song object to true.
+   * @desc Plays the current Buzz object. Sets the playing property of the song object to true
    * @param {Object} song
    */
-     var playSong = function(song) {
-           currentBuzzObject.play();
-           song.playing = true;
-     }
+
 
 
          currentBuzzObject = new buzz.sound(song.audioUrl, {
