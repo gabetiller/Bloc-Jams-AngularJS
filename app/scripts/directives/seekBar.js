@@ -33,6 +33,11 @@
 
            };
 
+           scope.thumbStyle = function() {
+               return {left: percentString()};
+
+           };
+
            scope.onClickSeekBar = function(event) {
            var percent = calculatePercent(seekBar, event);
            scope.value = percent * scope.max;
@@ -40,18 +45,18 @@
            };
 
            scope.trackThumb = function() {
-           $document.bind('mousemove.thumb', function(event) {
-               var percent = calculatePercent(seekBar, event);
-               scope.$apply(function() {
-                   scope.value = percent * scope.max;
-               });
-           });
+                $document.bind('mousemove.thumb', function(event) {
+                    var percent = calculatePercent(seekBar, event);
+                    scope.$apply(function() {
+                        scope.value = percent * scope.max;
+                    });
+                });
 
-           $document.bind('mouseup.thumb', function() {
-               $document.unbind('mousemove.thumb');
-               $document.unbind('mouseup.thumb');
-           });
-       };
+                $document.bind('mouseup.thumb', function() {
+                    $document.unbind('mousemove.thumb');
+                    $document.unbind('mouseup.thumb');
+                });
+            };
 
 
     }
