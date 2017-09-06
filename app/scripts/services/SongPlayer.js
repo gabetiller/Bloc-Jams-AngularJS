@@ -1,5 +1,5 @@
 (function() {
-     function SongPlayer(Fixtures) {
+     function SongPlayer($rootScope, Fixtures) {
           var SongPlayer = {};
 /**
 * @desc storing album info
@@ -24,9 +24,6 @@
                currentBuzzObject.stop();
                SongPlayer.currentSong.playing = null;
            }
-
-
-
 /**
 * @desc Buzz object audio file
 * @type {Object}
@@ -35,7 +32,11 @@
              formats: ['mp3'],
              preload: true
          });
-
+         currentBuzzObject.bind('timeupdate', function() {
+                  $rootScope.$apply(function() {
+                      SongPlayer.currentTime = currentBuzzObject.getTime();
+                  });
+              });
          SongPlayer.currentSong = song;
       };
       var getSongIndex = function(song) {
@@ -75,6 +76,12 @@
 * @type {Object}
 */
     SongPlayer.currentSong = null;
+
+    /**
+ * @desc Current playback time (in seconds) of currently playing song
+ * @type {Number}
+ */
+    SongPlayer.currentTime = null;
 
 /**
 * @function SongPlayer.play
@@ -138,6 +145,17 @@
        }
 
 };
+
+/**
+* @function setCurrentTime
+* @desc Set current time (in seconds) of currently playing song
+* @param {Number} time
+*/
+      SongPlayer.setCurrentTime = function(time) {
+          if (currentBuzzObject) {
+              currentBuzzObject.setTime(time);
+          }
+      };
 /**
 * @function SongPlayer.play
 * @desc If the user clicks on the currentBuzzObject (current song) we pause the song and set the song.play boolean to false.
@@ -153,5 +171,5 @@
 
      angular
          .module('blocJams')
-         .factory('SongPlayer', ['Fixtures', SongPlayer]);
+         .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
  })();
