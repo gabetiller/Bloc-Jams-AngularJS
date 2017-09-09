@@ -48,10 +48,10 @@
 
            };
            var notifyOnChange = function(newValue) {
-           if (typeof scope.onChange === 'function') {
-           scope.onChange({value: newValue});
-              }
-          };
+             if (typeof scope.onChange === 'function') {
+               scope.onChange({value: newValue});
+             }
+           };
 
            scope.onClickSeekBar = function(event) {
            var percent = calculatePercent(seekBar, event);
